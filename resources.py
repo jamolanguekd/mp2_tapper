@@ -16,3 +16,8 @@ main_background = pyglet.resource.image("bg.png")
 
 initialize_image(image_pikachu, 100, 80)
 initialize_image(image_pokeball, 30, 30)
+
+
+def music():
+	music= pyglet.media.load("bg.mp3")
+	return music

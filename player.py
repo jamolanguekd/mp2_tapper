@@ -17,6 +17,8 @@ class Player(GameObject):
         self.event_handlers = [self.on_key_press]
 
     def on_key_press(self, symbol, modifiers):
+        serve=pyglet.media.load("serve.mp3", streaming=False)
+        life=pyglet.media.load("life.mp3",streaming=False)
         if symbol == key.UP:
             if self.lane != 3:
                 self.y += 110
@@ -29,13 +31,14 @@ class Player(GameObject):
 
         if symbol == key.Q:
             self.throw_dog_food()
+            serve.play()
+
 
     def throw_dog_food(self):
         new_food = DogFood(batch=self.batch)
         new_food.x = self.x
         new_food.y = self.y
         new_food.lane = self.lane
-
         self.new_objects.append(new_food)
 
 

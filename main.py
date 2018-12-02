@@ -16,6 +16,20 @@ score = 0
 
 test_dog = None
 
+def music():
+    music= resources.music()
+
+    loop= pyglet.media.SourceGroup(music.audio_format, None)
+    loop.queue(music)
+    loop.loop=True
+
+    player=pyglet.media.Player()
+    player.queue(loop)
+    player.play()
+
+music()
+
+
 def init():
 
     reset_level()
@@ -42,6 +56,7 @@ def reset_level():
 @game_window.event
 def on_mouse_press(x,y, button, modifiers):
     score_label.text = str(x)+" "+str(y)
+
 
 @game_window.event
 def on_draw():
