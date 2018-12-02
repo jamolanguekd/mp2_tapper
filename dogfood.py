@@ -4,7 +4,7 @@ import pyglet
 
 class DogFood(GameObject):
     def __init__(self, *args, **kwargs):
-        super(DogFood, self).__init__(img=resources.image_pokeball, *args, **kwargs)
+        super(DogFood, self).__init__(img=resources.image_dog_food, *args, **kwargs)
         self.velocity_x = 500.0
         self.lane = 0
         self.direction = "left"
@@ -32,7 +32,11 @@ class DogFood(GameObject):
             self.destroy()
 
     def handle_collision(self, other_object):
-        self.destroy()
+        if other_object.__class__.__name__ == "Dog":
+            if not other_object.fed:
+                other_object.set_direction("left")
+                self.eaten = True
+                self.destroy()
 
     def destroy(self):
         self.destroyed = True

@@ -7,32 +7,27 @@ import resources
 class Player(GameObject):
 
     def __init__(self, *args, **kwargs):
-        super(Player, self).__init__(img=resources.image_pikachu, *args, **kwargs)
-        self.x = 690
-        self.y = 80
+        super(Player, self).__init__(img=resources.image_player, *args, **kwargs)
+        self.x = 0
+        self.y = 0
         self.velocity_x = 0.0
         self.direction = "none"
         self.lane = 1
         self.new_objects = []
         self.event_handlers = [self.on_key_press]
 
+        self.set_lane(1)
+
     def on_key_press(self, symbol, modifiers):
-        serve=pyglet.media.load("serve.mp3", streaming=False)
-        life=pyglet.media.load("life.mp3",streaming=False)
         if symbol == key.UP:
-            if self.lane != 3:
-                self.y += 110
-                self.lane += 1
+            self.set_lane(self.lane+1)
 
         if symbol == key.DOWN:
-            if self.lane != 1:
-                self.y -= 110
-                self.lane -= 1
+            self.set_lane(self.lane-1)
 
         if symbol == key.Q:
             self.throw_dog_food()
-            serve.play()
-
+            resources.music_throw.play()
 
     def throw_dog_food(self):
         new_food = DogFood(batch=self.batch)
@@ -40,5 +35,22 @@ class Player(GameObject):
         new_food.y = self.y
         new_food.lane = self.lane
         self.new_objects.append(new_food)
+
+    def set_lane(self, num):
+        if 1 <= num <= 3:
+            self.lane = num
+
+        if num == 1:
+            self.x = 665
+            self.y = 70
+
+        if num == 2:
+            self.x = 665
+            self.y = 185
+
+        if num == 3:
+            self.x = 655
+            self.y = 295
+
 
 
