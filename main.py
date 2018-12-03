@@ -24,21 +24,22 @@ event_stack_size = 0
 
 test_dog = None
 
+music_bg = resources.music_background
+music_game_over = resources.music_game_over
 
-def music():
-    music = resources.music_background
+loop = pyglet.media.SourceGroup(music_bg.audio_format, None)
+loop.queue(music_bg)
+loop.loop = True
 
-    loop = pyglet.media.SourceGroup(music.audio_format, None)
-    loop.queue(music)
-    loop.loop = True
-
-    player = pyglet.media.Player()
-    player.queue(loop)
-    player.play()
+music_player = pyglet.media.Player()
+music_player.queue(loop)
+music_player.queue(music_game_over)
+music_player.play()
+x = 0
 
 def init():
     reset_level()
-    music()
+
 
 
 def reset_level():
@@ -128,7 +129,9 @@ def update(dt):
             except:
                 item = None
         game_over.y = 0
-
+        if x == 0:
+            music_player.next_source()
+            x = 1
 
 if __name__ == '__main__':
     init()
