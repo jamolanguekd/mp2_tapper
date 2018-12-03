@@ -11,7 +11,7 @@ class Dog(GameObject):
         self.y = 0
         self.direction = None
         self.lane = None
-        self.velocity_x = 100
+        self.velocity_x = 200
 
         # FLAGS
         self.destroyed = False
@@ -26,14 +26,17 @@ class Dog(GameObject):
             if self.x + self.width // 2 >= 665:
                 self.end = True
                 self.destroyed = True
+                resources.music_sad_bork.play()
         if self.lane == 2:
             if self.x + self.width // 2 >= 665:
                 self.end = True
                 self.destroyed = True
+                resources.music_sad_bork.play()
         if self.lane == 3:
             if self.x + self.width // 2 >= 655:
                 self.end = True
                 self.destroyed = True
+                resources.music_sad_bork.play()
 
     def check_home(self):
         if self.lane == 1:
@@ -55,6 +58,7 @@ class Dog(GameObject):
                     self.set_direction("left")
                     other_object.eaten = True
                     other_object.destroy()
+                    resources.music_happy_bork.play()
 
     def set_direction(self, direction):
         self.direction = direction
