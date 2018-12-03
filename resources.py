@@ -35,6 +35,7 @@ image_cat_food = pyglet.resource.image("cat_food.png")
 
 image_game_over = pyglet.resource.image("game_over.png")
 main_background = pyglet.resource.image("background.png")
+main_menu = pyglet.resource.image("menu.png")
 
 music_background = pyglet.media.load("resources/background_music.mp3")
 music_throw = pyglet.media.load("resources/throw.mp3", streaming=False)

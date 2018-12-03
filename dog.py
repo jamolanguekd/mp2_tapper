@@ -11,7 +11,7 @@ class Dog(GameObject):
         self.y = 0
         self.direction = None
         self.lane = None
-        self.velocity_x = 200
+        self.velocity_x = 150
 
         # FLAGS
         self.destroyed = False
