@@ -24,16 +24,16 @@ class Dog(GameObject):
     def check_end(self):
         if self.lane == 1:
             if self.x + self.width // 2 >= 665:
-                self.velocity_x = 0
                 self.end = True
+                self.destroyed = True
         if self.lane == 2:
             if self.x + self.width // 2 >= 665:
-                self.velocity_x = 0
                 self.end = True
+                self.destroyed = True
         if self.lane == 3:
             if self.x + self.width // 2 >= 655:
-                self.velocity_x = 0
                 self.end = True
+                self.destroyed = True
 
     def check_home(self):
         if self.lane == 1:
