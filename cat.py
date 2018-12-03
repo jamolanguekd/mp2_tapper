@@ -2,9 +2,9 @@ from gameobject import GameObject
 import resources
 
 
-class Dog(GameObject):
+class Cat(GameObject):
     def __init__(self, *args, **kwargs):
-        super(Dog, self).__init__(img=resources.image_dog, *args, **kwargs)
+        super(Cat, self).__init__(img=resources.image_cat, *args, **kwargs)
 
         # ATTRIBUTES
         self.x = 0
@@ -21,7 +21,7 @@ class Dog(GameObject):
         # INITIAL VALUES
         self.set_direction("right")
 
-    # CHECKS IF THE DOG REACHES THE END OF EACH LANE
+    # CHECKS IF THE CAT REACHES THE END OF EACH LANE
     def check_end(self):
         if self.lane == 1:
             if self.x + self.width // 2 >= 665:
@@ -55,13 +55,13 @@ class Dog(GameObject):
 
     def handle_collision(self, other_object):
         if not self.fed:
-            if other_object.__class__.__name__ == "DogFood":
+            if other_object.__class__.__name__ == "CatFood":
                 if other_object.destroyed is False:
                     self.set_direction("left")
                     other_object.eaten = True
                     other_object.destroy()
                     resources.music_happy_bork.play()
-            if other_object.__class__.__name__ == "CatFood":
+            if other_object.__class__.__name__ == "DogFood":
                 if other_object.destroyed is False:
                     other_object.wasted = True
                     other_object.destroy()
@@ -70,10 +70,10 @@ class Dog(GameObject):
     def set_direction(self, direction):
         self.direction = direction
         if self.direction == "right":
-            self.image = resources.image_dog
+            self.image = resources.image_cat
         if self.direction == "left":
             self.fed = True
-            self.image = resources.image_dog_reversed
+            self.image = resources.image_cat_reversed
             self.velocity_x = 500
 
     def set_lane(self, num):

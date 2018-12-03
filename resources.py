@@ -20,10 +20,18 @@ image_dog.add_to_texture_bin(animation_bin)
 image_dog_reversed = pyglet.image.load_animation("resources/biscuit_reversed.gif")
 image_dog_reversed.add_to_texture_bin(animation_bin)
 
+image_cat = pyglet.image.load_animation("resources/oreo.gif")
+image_cat.add_to_texture_bin(animation_bin)
+
+image_cat_reversed = pyglet.image.load_animation("resources/oreo.gif")
+image_cat_reversed.add_to_texture_bin(animation_bin)
+
 image_lives = pyglet.image.load_animation("resources/lives.gif")
 image_lives.add_to_texture_bin(animation_bin)
 
 image_dog_food = pyglet.resource.image("dog_food.png")
+
+image_cat_food = pyglet.resource.image("cat_food.png")
 
 image_game_over = pyglet.resource.image("game_over.png")
 main_background = pyglet.resource.image("background.png")
