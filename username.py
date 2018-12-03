@@ -2,7 +2,9 @@ import pyglet
 from pyglet.window import key
 
 class Rectangle(object):
+
     '''Draws a rectangle into a batch.'''
+
     def __init__(self, x1, y1, x2, y2, batch):
         self.vertex_list = batch.add(4, pyglet.gl.GL_QUADS, None,
             ('v2i', [x1, y1, x2, y1, x2, y2, x1, y2]),
@@ -36,15 +38,16 @@ class TextWidget(object):
 
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
-        super(Window, self).__init__(400, 140, caption='USERNAME')
+        super(Window, self).__init__(400, 100, caption='Enter Name')
 
         self.batch = pyglet.graphics.Batch()
         self.labels = [
-            pyglet.text.Label('USERNAME', x=10, y=60, anchor_y='bottom',
-                              color=(0, 0, 0, 255), batch=self.batch),
-            pyglet.text.Label('Score', x=10, y=20,
+            pyglet.text.Label('USERNAME', x=10, y=70, anchor_y='center',
+                              color=(0, 0, 0, 255), batch=self.batch,
+                              font_name="Geris Font", font_size=18),
+            pyglet.text.Label('Enter a 3-letter name and press enter.', x=50, y=30,
                               anchor_y='bottom', color=(0, 0, 0, 255),
-                              batch=self.batch),
+                              batch=self.batch,font_name="Geris Font", font_size=13),
         ]
         self.widgets = [
             TextWidget('', 200, 60, self.width - 210, self.batch),
@@ -65,9 +68,8 @@ class Window(pyglet.window.Window):
 
     def on_key_press(self, symbol, modifiers):
         username="".join(name)
-        if symbol==pyglet.window.key.ENTER:
-            self.label=pyglet.text.Label('HELLO  '+username, x=150, y=100, anchor_y='bottom', color=(0, 0, 0, 255), batch=self.batch)
-            print(username)
+        # if symbol==pyglet.window.key.ENTER:
+        #     self.label=pyglet.text.Label('HELLO  '+username, x=150, y=100, anchor_y='bottom', color=(0, 0, 0, 255), batch=self.batch)
         if symbol == pyglet.window.key.TAB:
             if modifiers & pyglet.window.key.MOD_SHIFT:
                 dir = -1
@@ -80,11 +82,10 @@ class Window(pyglet.window.Window):
                 i = 0
                 dir = 0
 
-
-        elif symbol == pyglet.window.key.ESCAPE:
+        elif symbol == pyglet.window.key.ENTER:
             window.close()
             pyglet.app.exit()
 
 name=[]
-window = Window(resizable=True)
+window = Window()
 pyglet.app.run()

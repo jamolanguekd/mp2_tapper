@@ -1,4 +1,5 @@
 from pyglet.window import key
+from pyglet.window import mouse
 from gameobject import GameObject
 from dogfood import DogFood
 import resources
@@ -25,7 +26,12 @@ class Player(GameObject):
         if symbol == key.DOWN:
             self.set_lane(self.lane-1)
 
-        if symbol == key.Q:
+        # if symbol == key.Q:
+        #     self.throw_dog_food()
+        #     resources.music_throw.play()
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        if buttons and mouse.LEFT:
             self.throw_dog_food()
             resources.music_throw.play()
 
