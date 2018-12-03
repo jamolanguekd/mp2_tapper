@@ -21,6 +21,7 @@ class Dog(GameObject):
         # INITIAL VALUES
         self.set_direction("right")
 
+    # CHECKS IF THE DOG REACHES THE END OF EACH LANE
     def check_end(self):
         if self.lane == 1:
             if self.x + self.width // 2 >= 665:
@@ -38,6 +39,7 @@ class Dog(GameObject):
                 self.destroyed = True
                 resources.music_sad_bork.play()
 
+    # CHECKS IF THE DOG
     def check_home(self):
         if self.lane == 1:
             if self.x <= 170:

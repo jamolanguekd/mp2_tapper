@@ -26,9 +26,9 @@ image_lives.add_to_texture_bin(animation_bin)
 image_dog_food = pyglet.resource.image("dog_food.png")
 
 image_game_over = pyglet.resource.image("game_over.png")
-main_background = pyglet.resource.image("bg.png")
+main_background = pyglet.resource.image("background.png")
 
-music_background = pyglet.media.load("resources/bg.mp3")
+music_background = pyglet.media.load("resources/background_music.mp3")
 music_throw = pyglet.media.load("resources/throw.mp3", streaming=False)
 music_life = pyglet.media.load("resources/life.mp3", streaming=False)
 music_happy_bork = pyglet.media.load("resources/happy_bork.mp3", streaming=False)
