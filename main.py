@@ -1,7 +1,9 @@
 import pyglet
 import player
 import dog
+import cat
 import dogfood
+import catfood
 import resources
 import random
 import itertools
@@ -12,14 +14,15 @@ game_window = pyglet.window.Window(width=800, height=600)
 
 main_batch = pyglet.graphics.Batch()
 main_batch_background = pyglet.graphics.OrderedGroup(0)
-main_batch_foreground = pyglet.graphics.OrderedGroup(1)
+main_batch_middle = pyglet.graphics.OrderedGroup(1)
+main_batch_foreground = pyglet.graphics.OrderedGroup(2)
 
 game_background = pyglet.sprite.Sprite(resources.main_background, batch=main_batch, group=main_batch_background)
-game_over = pyglet.sprite.Sprite(img=resources.image_game_over, y=800, batch=main_batch, group=main_batch_background)
+game_over = pyglet.sprite.Sprite(img=resources.image_game_over, y=800, batch=main_batch, group=main_batch_foreground)
 score_label = pyglet.text.Label(text="Score: ", x=30, y=560, color=(0, 0, 0, 255),
-                                font_name="Geris Font", font_size=18, batch=main_batch, group=main_batch_background)
+                                font_name="Geris Font", font_size=18, batch=main_batch, group=main_batch_middle)
 lives_label = pyglet.text.Label(text="Lives: ", x=580, y=560, color=(0, 0, 0, 255),
-                                font_name="Geris Font", font_size=18, batch=main_batch, group=main_batch_background)
+                                font_name="Geris Font", font_size=18, batch=main_batch, group=main_batch_middle)
 
 game_objects = []
 game_lives = []
@@ -47,12 +50,12 @@ def reset_level():
         game_window.pop_handlers()
         event_stack_size -= 1
 
-    game_player = player.Player(batch=main_batch, group=main_batch_foreground)
+    game_player = player.Player(batch=main_batch, group=main_batch_middle)
     game_objects = [game_player]
     game_lives = []
     for i in range(lives):
         new_life = pyglet.sprite.Sprite(img=resources.image_lives, x=650 + (i * 35), y=550, batch=main_batch,
-                                        group=main_batch_background)
+                                        group=main_batch_middle)
         new_life.scale = 0.3
         game_lives.append(new_life)
 
@@ -61,9 +64,6 @@ def reset_level():
             game_window.push_handlers(handler)
             event_stack_size += 1
 
-@game_window.event
-def on_mouse_press(x,y, button, modifiers):
-    score_label.text = str(x)+" "+str(y)
 
 @game_window.event
 def on_draw():
@@ -71,6 +71,7 @@ def on_draw():
     main_batch.draw()
     score_label.draw()
     lives_label.draw()
+
 
 @game_window.event
 def update(dt):
@@ -95,12 +96,12 @@ def update(dt):
             game_objects.remove(item)
             item.delete()
 
-            if isinstance(item, dogfood.DogFood):
+            if isinstance(item, dogfood.DogFood) or isinstance(item, catfood.CatFood):
                 if item.eaten:
                     score += 100
                 if item.wasted:
                     lives -= 1
-            if isinstance(item, dog.Dog):
+            if isinstance(item, dog.Dog) or isinstance(item, cat.Cat):
                 if item.end:
                     lives -= 1
 
@@ -113,11 +114,17 @@ def update(dt):
             to_add.extend(item.new_objects)
             item.new_objects = []
 
-        # GENERATE DOGS
+        # GENERATE DOGS AND CATS
         if random.randint(1, 100) <= 2:
-            new_dog = dog.Dog(batch=main_batch, group=main_batch_foreground)
-            new_dog.set_lane(random.randint(1, 3))
-            to_add.append(new_dog)
+            chance_dog_cat = random.randint(1, 100)
+            if chance_dog_cat > 50:
+                new_dog = dog.Dog(batch=main_batch, group=main_batch_foreground)
+                new_dog.set_lane(random.randint(1, 3))
+                to_add.append(new_dog)
+            else:
+                new_cat = cat.Cat(batch=main_batch, group=main_batch_foreground)
+                new_cat.set_lane(random.randint(1, 3))
+                to_add.append(new_cat)
 
         game_objects.extend(to_add)
 

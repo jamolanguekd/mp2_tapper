@@ -2,9 +2,9 @@ from gameobject import GameObject
 import resources
 
 
-class DogFood(GameObject):
+class CatFood(GameObject):
     def __init__(self, *args, **kwargs):
-        super(DogFood, self).__init__(img=resources.image_dog_food, *args, **kwargs)
+        super(CatFood, self).__init__(img=resources.image_cat_food, *args, **kwargs)
         self.velocity_x = 500.0
         self.lane = 0
         self.direction = "left"
@@ -32,12 +32,12 @@ class DogFood(GameObject):
             self.destroy()
 
     def handle_collision(self, other_object):
-        if other_object.__class__.__name__ == "Dog":
+        if other_object.__class__.__name__ == "Cat":
             if not other_object.fed:
                 other_object.set_direction("left")
                 self.eaten = True
                 self.destroy()
-        if other_object.__class__.__name__ == "Cat":
+        if other_object.__class__.__name__ == "Dog":
             if not other_object.fed:
                 self.wasted = True
                 self.destroy()
