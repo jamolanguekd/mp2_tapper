@@ -5,14 +5,20 @@ class GameObject(Sprite):
 
     def __init__(self, *args, **kwargs):
         super(GameObject, self).__init__(*args, **kwargs)
+
+        # ATTRIBUTES
+        self.x = 0
+        self.y = 0
+        self.direction = None
+        self.lane = None
         self.velocity_x = 0.0
-        self.direction = "left"
-        self.new_objects = []
-        self.event_handlers = []
+
+        # FLAGS
         self.destroyed = False
-        self.lane = 1
-        self.wasted = False
-        self.eaten = False
+
+        # LISTS
+        self.event_handlers = []
+        self.new_objects = []
 
     def update(self, dt):
         if self.direction == "right":
@@ -22,6 +28,16 @@ class GameObject(Sprite):
             self.x -= self.velocity_x * dt
 
     def collides_with(self, other_object):
-        self.lane = self.lane
+        if self.direction == "left":
+            if self.lane == other_object.lane:
+                    if self.x <= other_object.x + other_object.width // 2:
+                        return True
+
+        if self.direction == "right":
+            if self.lane == other_object.lane:
+                if self.x + self.width // 2 >= other_object.x:
+                    return True
+
+        return False
 
 
