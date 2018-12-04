@@ -37,6 +37,7 @@ image_cat_food = pyglet.resource.image("cat_food.png")
 image_game_over = pyglet.resource.image("game_over.png")
 image_game_ready = pyglet.resource.image("game_ready.png")
 main_background = pyglet.resource.image("background.png")
+leaderboard = pyglet.resource.image("leaderboard.png")
 main_menu = pyglet.resource.image("menu.png")
 
 music_background = pyglet.media.load("resources/background_music.mp3", streaming=False)
@@ -50,3 +51,5 @@ music_game_over = pyglet.media.load("resources/tempo.mp3", streaming=False)
 
 pyglet.font.add_file("resources/geris_font.ttf")
 font_game = pyglet.font.load("Geris Font")
+pyglet.font.add_file("resources/photographs.ttf")
+font_numbers = pyglet.font.load("Photographs")

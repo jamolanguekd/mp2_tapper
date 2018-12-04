@@ -1,4 +1,4 @@
-import username
+# import username
 import pyglet
 import player
 import dog
@@ -11,14 +11,15 @@ import itertools
 import gamemusic
 from pyglet.window import mouse
 
+# # PLAYER PROFILE
+# player_name = username.name
+#
+# for _ in range(3):              # Ensures player_name is at least 3 characters regardless of
+#     player_name.append('A')     # the actual length of the entry.
+#
+# player_name = ''.join(player_name[:3]).upper()
+
 # SET UP INTERFACE
-player_name = username.name
-
-for _ in range(3):              # Ensures player_name is at least 3 characters regardless of
-    player_name.append('A')     # the actual length of the entry.
-
-player_name = ''.join(player_name[:3]).upper()
-
 game_window = pyglet.window.Window(width=800, height=600)
 game_window.set_exclusive_mouse(True)
 
@@ -42,6 +43,7 @@ game_over_player = None
 @game_window.event
 def on_mouse_press(x, y, symbol, modifiers):
     global state
+    print(str(x)+" "+str(y))
     if state == "main_menu":
         if symbol == mouse.LEFT:
             if 240 < x < 565:
@@ -51,10 +53,16 @@ def on_mouse_press(x, y, symbol, modifiers):
             if 235 < x < 570:
                 if 100 < y < 135:
                     state = "leaderboards"
+                    scene(state)
             if 235 < x < 560:
                 if 60 < y < 95:
                     pyglet.app.exit()
-
+    if state == "leaderboards":
+        if symbol == mouse.LEFT:
+            if 35 < x < 160:
+                if 55 < y < 105:
+                    state = "main_menu"
+                    scene(state)
 
 @game_window.event
 def on_draw():
@@ -63,6 +71,8 @@ def on_draw():
         menu_batch.draw()
     if state == "play_game":
         main_batch.draw()
+    if state == "leaderboards":
+        leaderboard_batch.draw()
 
 
 def scene(string_state):
@@ -72,6 +82,48 @@ def scene(string_state):
     if string_state == "play_game":
         start_game()
         pyglet.clock.schedule_interval(update, 1/120.0)
+
+    if string_state == "leaderboards":
+        start_leaderboards()
+
+
+def start_leaderboards():
+    global leaderboard_batch, leaderboard_background_image, menu_music_player
+
+    if isinstance(menu_music_player, gamemusic.GameMusic):
+        menu_music_player.delete()
+
+    menu_music_player = gamemusic.GameMusic()
+    menu_music_player.play_menu()
+
+    # SET UP BATCH
+    leaderboard_batch = pyglet.graphics.Batch()
+    leaderboard_background = pyglet.graphics.OrderedGroup(0)
+    leaderboard_foreground = pyglet.graphics.OrderedGroup(1)
+    leaderboard_background_image = pyglet.sprite.Sprite(img=resources.leaderboard, batch=leaderboard_batch,
+                                                        group=leaderboard_background)
+
+    # READ HI SCORES
+    leaderboard_file = open('leaderboard.txt')
+    leaderboard_data = [x.strip() for x in leaderboard_file.readlines()]
+    leaderboard_users= [item.split()[0] for item in leaderboard_data]
+    leaderboard_scores = [item.split()[1] for item in leaderboard_data]
+    leaderboard_labels = []
+    for i in range(len(leaderboard_users)):
+        x = 300
+        y = 248 - i * 46
+        new_label = pyglet.text.Label(text=leaderboard_users[i], x=x, y=y, font_name="Geris Font",
+                                      color=(0, 0, 0, 255),font_size=25, batch=leaderboard_batch,
+                                      group=leaderboard_foreground)
+        leaderboard_labels.append(new_label)
+    for i in range(len(leaderboard_scores)):
+        x = 467
+        y = 248 - i * 46
+        new_label = pyglet.text.Label(text=leaderboard_scores[i], x=x, y=y, font_name="Photographs",
+                                      color=(0, 0, 0, 255),font_size=25, batch=leaderboard_batch,
+                                      group=leaderboard_foreground)
+        leaderboard_labels.append(new_label)
+
 
 
 def start_menu():
@@ -85,6 +137,8 @@ def start_menu():
         game_music_player.delete()
     if isinstance(game_over_player, gamemusic.GameMusic):
         game_over_player.delete()
+    if isinstance(menu_music_player, gamemusic.GameMusic):
+        menu_music_player.delete()
     menu_music_player = gamemusic.GameMusic()
     menu_music_player.play_menu()
     game_window.set_exclusive_mouse(False)
