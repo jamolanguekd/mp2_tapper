@@ -10,11 +10,18 @@ class Player(GameObject):
 
     def __init__(self, *args, **kwargs):
         super(Player, self).__init__(img=resources.image_player, *args, **kwargs)
+
+        # ATTRIBUTES
         self.x = 0
         self.y = 0
-        self.velocity_x = 0.0
-        self.direction = "none"
+        self.direction = None
         self.lane = 1
+        self.velocity_x = 0.0
+
+        # FLAGS
+        self.destroyed = False
+
+        # LISTS
         self.new_objects = []
         self.event_handlers = [self.on_key_press, self.on_mouse_press]
 
@@ -36,6 +43,7 @@ class Player(GameObject):
             self.throw_cat_food()
             resources.music_throw.play()
 
+    # GENERATE DOG FOOD OBJECT
     def throw_dog_food(self):
         new_food = DogFood(batch=self.batch, group=self.group)
         new_food.x = self.x
@@ -43,6 +51,7 @@ class Player(GameObject):
         new_food.lane = self.lane
         self.new_objects.append(new_food)
 
+    # GENERATE CAT FOOD OBJECT
     def throw_cat_food(self):
         new_food = CatFood(batch=self.batch, group=self.group)
         new_food.x = self.x
@@ -50,6 +59,7 @@ class Player(GameObject):
         new_food.lane = self.lane
         self.new_objects.append(new_food)
 
+    # SET THE LANE OF THE PLAYER
     def set_lane(self, num):
         if 1 <= num <= 3:
             self.lane = num

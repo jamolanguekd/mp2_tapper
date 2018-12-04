@@ -54,13 +54,19 @@ class Dog(GameObject):
                 self.destroyed = True
 
     def handle_collision(self, other_object):
+
+        # ONLY CHECK FOR COLLISION IF NOT FED
         if not self.fed:
+
+            # IF FED DOG FOOD
             if other_object.__class__.__name__ == "DogFood":
                 if other_object.destroyed is False:
                     self.set_direction("left")
                     other_object.eaten = True
                     other_object.destroy()
                     resources.music_happy_bork.play()
+
+            # IF FED CAT FOOD
             if other_object.__class__.__name__ == "CatFood":
                 if other_object.destroyed is False:
                     self.set_direction("left")
@@ -68,6 +74,7 @@ class Dog(GameObject):
                     other_object.destroy()
                     resources.music_sad_bork.play()
 
+    # SET DIRECTION OF THE DOG
     def set_direction(self, direction):
         self.direction = direction
         if self.direction == "right":
@@ -77,6 +84,7 @@ class Dog(GameObject):
             self.image = resources.image_dog_reversed
             self.velocity_x = 500
 
+    # SET THE LANE OF THE DOG
     def set_lane(self, num):
         self.lane = num
         if self.lane == 1:
@@ -91,6 +99,7 @@ class Dog(GameObject):
             self.x = 190
             self.y = 295
 
+    # FUNCTIONS TO CALL EVERY FRAME
     def update(self, dt):
         super().update(dt)
         self.check_end()

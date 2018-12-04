@@ -10,8 +10,6 @@ class GameMusic(pyglet.media.Player):
         self.background_music = resources.music_background
         self.game_over_music = resources.music_game_over
 
-        self.state = ""
-
     def play_menu(self):
         loop_background_music = pyglet.media.SourceGroup(self.background_music.audio_format, None)
         loop_background_music.queue(self.background_music)
