@@ -14,9 +14,7 @@ from pyglet.window import mouse
 game_window = pyglet.window.Window(width=800, height=600)
 game_window.set_exclusive_mouse(True)
 
-menu_batch = pyglet.graphics.Batch()
-main_menu_background = pyglet.sprite.Sprite(img=resources.main_menu, batch=menu_batch)
-
+# GLOBAL VARIABLES
 game_ready_timer = None
 game_over_timer = None
 game_objects = []
@@ -27,9 +25,11 @@ lives = None
 event_stack_size = 0
 state = "main_menu"
 
+# GLOBAL PLAYERS
 game_music_player = None
 menu_music_player = None
 game_over_player = None
+
 
 @game_window.event
 def on_mouse_press(x, y, symbol, modifiers):
@@ -67,7 +67,12 @@ def scene(string_state):
 
 
 def start_menu():
-    global menu_music_player, game_music_player,game_over_player
+    global menu_music_player, game_music_player, game_over_player, menu_batch, main_menu_background
+
+    # SET UP BATCH
+    menu_batch = pyglet.graphics.Batch()
+    main_menu_background = pyglet.sprite.Sprite(img=resources.main_menu, batch=menu_batch)
+
     if isinstance(game_music_player, gamemusic.GameMusic):
         game_music_player.delete()
     if isinstance(game_over_player, gamemusic.GameMusic):
