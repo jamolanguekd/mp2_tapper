@@ -10,6 +10,7 @@ import random
 import itertools
 import gamemusic
 from pyglet.window import mouse
+from pyglet.window import key
 
 # # PLAYER PROFILE
 # player_name = username.name
@@ -24,21 +25,38 @@ game_window = pyglet.window.Window(width=800, height=600)
 game_window.set_exclusive_mouse(True)
 
 # GLOBAL VARIABLES
+player_name = ""
 game_ready_timer = None
 game_over_timer = None
 game_objects = []
 game_lives = []
 game_player = None
-score = None
+score = 0
 lives = None
 event_stack_size = 0
 state = "main_menu"
+finished_round = True
 
 # GLOBAL PLAYERS
 game_music_player = None
 menu_music_player = None
 game_over_player = None
 
+
+@game_window.event
+def on_key_press(symbol, modifiers):
+    global state, player_name, name_input_label, name_input, score
+
+    if state == "leaderboards":
+        if finished_round:
+            if 65 < symbol < 122:
+                if len(player_name) < 3:
+                    player_name += chr(symbol).upper()
+                    name_input_label.text = player_name
+            if symbol == key.ENTER:
+                name_input_label.delete()
+                name_input.delete()
+                save_score()
 
 @game_window.event
 def on_mouse_press(x, y, symbol, modifiers):
@@ -74,6 +92,25 @@ def on_draw():
     if state == "leaderboards":
         leaderboard_batch.draw()
 
+def save_score():
+    global score_file, score, player_name, users, scores
+
+    score_file = open("leaderboard.txt")
+    users = [item.split()[0] for item in score_file]
+    scores = [item.split()[1] for item in score_file]
+    score_file.close()
+
+    users.append(player_name)
+    scores.append(345)
+
+    score_file = open("leaderboard.txt", "w")
+
+    for i in range(len(users)):
+        score_file.write(str(users[i])+" "+str(score)+"\n")
+
+    score_file.close()
+    player_name = ""
+
 
 def scene(string_state):
     if string_state == "main_menu":
@@ -88,7 +125,8 @@ def scene(string_state):
 
 
 def start_leaderboards():
-    global leaderboard_batch, leaderboard_background_image, menu_music_player
+    global leaderboard_batch, leaderboard_background_image, menu_music_player, name_input, name_input_label, \
+        player_name, leaderboard_file
 
     if isinstance(menu_music_player, gamemusic.GameMusic):
         menu_music_player.delete()
@@ -99,31 +137,41 @@ def start_leaderboards():
     # SET UP BATCH
     leaderboard_batch = pyglet.graphics.Batch()
     leaderboard_background = pyglet.graphics.OrderedGroup(0)
-    leaderboard_foreground = pyglet.graphics.OrderedGroup(1)
+    leaderboard_middle = pyglet.graphics.OrderedGroup(1)
+    leaderboard_foreground = pyglet.graphics.OrderedGroup(2)
     leaderboard_background_image = pyglet.sprite.Sprite(img=resources.leaderboard, batch=leaderboard_batch,
                                                         group=leaderboard_background)
 
     # READ HI SCORES
     leaderboard_file = open('leaderboard.txt')
     leaderboard_data = [x.strip() for x in leaderboard_file.readlines()]
-    leaderboard_users= [item.split()[0] for item in leaderboard_data]
-    leaderboard_scores = [item.split()[1] for item in leaderboard_data]
-    leaderboard_labels = []
-    for i in range(len(leaderboard_users)):
-        x = 300
-        y = 248 - i * 46
-        new_label = pyglet.text.Label(text=leaderboard_users[i], x=x, y=y, font_name="Geris Font",
-                                      color=(0, 0, 0, 255),font_size=25, batch=leaderboard_batch,
-                                      group=leaderboard_foreground)
-        leaderboard_labels.append(new_label)
-    for i in range(len(leaderboard_scores)):
-        x = 467
-        y = 248 - i * 46
-        new_label = pyglet.text.Label(text=leaderboard_scores[i], x=x, y=y, font_name="Photographs",
-                                      color=(0, 0, 0, 255),font_size=25, batch=leaderboard_batch,
-                                      group=leaderboard_foreground)
-        leaderboard_labels.append(new_label)
+    if len(leaderboard_data) > 0:
+        leaderboard_users= [item.split()[0] for item in leaderboard_data]
+        leaderboard_scores = [item.split()[1] for item in leaderboard_data]
+        leaderboard_labels = []
+        for i in range(len(leaderboard_users)):
+            x = 300
+            y = 248 - i * 46
+            new_label = pyglet.text.Label(text=leaderboard_users[i], x=x, y=y, font_name="Geris Font",
+                                          color=(0, 0, 0, 255),font_size=25, batch=leaderboard_batch,
+                                          group=leaderboard_middle)
+            leaderboard_labels.append(new_label)
+        for i in range(len(leaderboard_scores)):
+            x = 467
+            y = 248 - i * 46
+            new_label = pyglet.text.Label(text=leaderboard_scores[i], x=x, y=y, font_name="Photographs",
+                                          color=(0, 0, 0, 255),font_size=25, batch=leaderboard_batch,
+                                          group=leaderboard_middle)
+            leaderboard_labels.append(new_label)
 
+    # CALL LEADERBOARD WHEN A ROUND IS DONE
+    if finished_round:
+        name_input = pyglet.sprite.Sprite(img=resources.image_enter_name, batch=leaderboard_batch,
+                                          group=leaderboard_foreground)
+        name_input.x = 9
+
+        name_input_label = pyglet.text.Label(text="", x=280, y=260, color=(0,0,0,255), batch=leaderboard_batch,
+                                             font_name="Geris Font", font_size=25, group=pyglet.graphics.OrderedGroup(3))
 
 
 def start_menu():
@@ -201,7 +249,7 @@ def start_game():
 
 def update(dt):
     global score, lives, game_music_player, game_window, event_stack_size, game_over_timer, state, \
-        game_ready_timer, game_ready, game_over, game_over_player
+        game_ready_timer, game_ready, game_over, game_over_player, finished_round
 
     # UPDATE LIVES
     while len(game_lives) > lives:
@@ -284,7 +332,8 @@ def update(dt):
             if game_over_timer <= 0:
                 score_label.delete()
                 lives_label.delete()
-                state = "main_menu"
+                finished_round = True
+                state = "leaderboards"
                 scene(state)
 
             # DISPLAY GAME OVER

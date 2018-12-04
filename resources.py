@@ -1,11 +1,6 @@
 import pyglet
 
 
-def initialize_image(image, width, height):
-    image.width = width
-    image.height = height
-
-
 # RESOURCES FOLDER
 pyglet.resource.path = ['resources']
 pyglet.resource.reindex()
@@ -36,6 +31,7 @@ image_cat_food = pyglet.resource.image("cat_food.png")
 
 image_game_over = pyglet.resource.image("game_over.png")
 image_game_ready = pyglet.resource.image("game_ready.png")
+image_enter_name = pyglet.resource.image("name_input.png")
 main_background = pyglet.resource.image("background.png")
 leaderboard = pyglet.resource.image("leaderboard.png")
 main_menu = pyglet.resource.image("menu.png")
