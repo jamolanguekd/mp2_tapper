@@ -42,7 +42,7 @@ class Window(pyglet.window.Window):
 
         self.batch = pyglet.graphics.Batch()
         self.labels = [
-            pyglet.text.Label('USERNAME', x=10, y=70, anchor_y='center',
+            pyglet.text.Label('NAME', x=10, y=70, anchor_y='center',
                               color=(0, 0, 0, 255), batch=self.batch,
                               font_name="Geris Font", font_size=18),
             pyglet.text.Label('Enter a 3-letter name and press enter.', x=50, y=30,

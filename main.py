@@ -1,3 +1,4 @@
+import username
 import pyglet
 import player
 import dog
@@ -11,6 +12,13 @@ import gamemusic
 from pyglet.window import mouse
 
 # SET UP INTERFACE
+player_name = username.name
+
+for _ in range(3):              # Ensures player_name is at least 3 characters regardless of
+    player_name.append('A')     # the actual length of the entry.
+
+player_name = ''.join(player_name[:3]).upper()
+
 game_window = pyglet.window.Window(width=800, height=600)
 game_window.set_exclusive_mouse(True)
 
