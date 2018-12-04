@@ -37,14 +37,14 @@ class Player(GameObject):
             resources.music_throw.play()
 
     def throw_dog_food(self):
-        new_food = DogFood(batch=self.batch)
+        new_food = DogFood(batch=self.batch, group=self.group)
         new_food.x = self.x
         new_food.y = self.y
         new_food.lane = self.lane
         self.new_objects.append(new_food)
 
     def throw_cat_food(self):
-        new_food = CatFood(batch=self.batch)
+        new_food = CatFood(batch=self.batch, group=self.group)
         new_food.x = self.x
         new_food.y = self.y
         new_food.lane = self.lane

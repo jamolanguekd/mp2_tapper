@@ -63,6 +63,7 @@ class Dog(GameObject):
                     resources.music_happy_bork.play()
             if other_object.__class__.__name__ == "CatFood":
                 if other_object.destroyed is False:
+                    self.set_direction("left")
                     other_object.wasted = True
                     other_object.destroy()
                     resources.music_sad_bork.play()

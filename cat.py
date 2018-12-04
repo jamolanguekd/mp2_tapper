@@ -27,17 +27,17 @@ class Cat(GameObject):
             if self.x + self.width // 2 >= 665:
                 self.end = True
                 self.destroyed = True
-                resources.music_sad_bork.play()
+                resources.music_sad_meow.play()
         if self.lane == 2:
             if self.x + self.width // 2 >= 665:
                 self.end = True
                 self.destroyed = True
-                resources.music_sad_bork.play()
+                resources.music_sad_meow.play()
         if self.lane == 3:
             if self.x + self.width // 2 >= 655:
                 self.end = True
                 self.destroyed = True
-                resources.music_sad_bork.play()
+                resources.music_sad_meow.play()
 
     # CHECKS IF THE DOG
     def check_home(self):
@@ -60,12 +60,13 @@ class Cat(GameObject):
                     self.set_direction("left")
                     other_object.eaten = True
                     other_object.destroy()
-                    resources.music_happy_bork.play()
+                    resources.music_happy_meow.play()
             if other_object.__class__.__name__ == "DogFood":
                 if other_object.destroyed is False:
+                    self.set_direction("left")
                     other_object.wasted = True
                     other_object.destroy()
-                    resources.music_sad_bork.play()
+                    resources.music_sad_meow.play()
 
     def set_direction(self, direction):
         self.direction = direction
