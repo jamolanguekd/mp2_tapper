@@ -65,7 +65,7 @@ def on_key_press(symbol, modifiers):
 @game_window.event
 def on_mouse_press(x, y, symbol, modifiers):
     global state
-    print(str(x)+" "+str(y))
+
     if state == "main_menu":
         if symbol == mouse.LEFT:
             if 240 < x < 565:
